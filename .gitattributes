@@ -1,0 +1,30 @@
+﻿# Default: let Git handle line endings automatically
+* text=auto
+
+# Shell scripts and YAML must stay LF — they break with CRLF
+*.sh text eol=lf
+*.yml text eol=lf
+*.yaml text eol=lf
+
+# Python and config files: keep LF for cross-platform consistency
+*.py text eol=lf
+*.toml text eol=lf
+*.cfg text eol=lf
+*.ini text eol=lf
+
+# Markdown and JSON can use platform-native (LF preferred for consistency)
+*.md text eol=lf
+*.json text eol=lf
+
+# Lockfiles must not be modified
+*.lock binary
+package-lock.json binary
+pnpm-lock.yaml binary
+uv.lock binary
+
+# Binary files
+*.png binary
+*.jpg binary
+*.pdf binary
+*.tar.gz binary
+*.zip binary

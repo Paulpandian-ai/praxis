@@ -1,0 +1,91 @@
+{
+  "$schema": "https://claude.com/schemas/settings.json",
+  "permissions": {
+    "allow": [
+      "Read(**)",
+      "Bash(git:*)",
+      "Bash(make:*)",
+      "Bash(uv:*)",
+      "Bash(pytest:*)",
+      "Bash(ruff:*)",
+      "Bash(npm:*)",
+      "Bash(pnpm:*)",
+      "Bash(cdk:*)",
+      "Bash(docker:*)",
+      "Bash(docker-compose:*)",
+      "Edit(agents/**)",
+      "Edit(mcp_servers/**)",
+      "Edit(frontend/**)",
+      "Edit(infra/**)",
+      "Edit(evals/**)",
+      "Edit(docs/**)",
+      "Edit(tests/**)",
+      "Edit(scripts/**)",
+      "Edit(.github/**)"
+    ],
+    "deny": [
+      "Bash(rm -rf:*)",
+      "Bash(git push:* main:*)",
+      "Bash(git push:* master:*)",
+      "Bash(git push --force:*)",
+      "Bash(aws s3 rm:*)",
+      "Bash(aws iam:*)",
+      "Bash(aws secretsmanager delete:*)",
+      "Bash(cdk destroy:*)",
+      "Edit(.env)",
+      "Edit(.env.production)",
+      "Edit(infra/secrets/**)"
+    ]
+  },
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Edit|Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": ".claude/hooks/block_secrets.sh"
+          },
+          {
+            "type": "command",
+            "command": ".claude/hooks/block_float_money.sh"
+          }
+        ]
+      },
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": ".claude/hooks/block_dangerous_bash.sh"
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "Edit|Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": ".claude/hooks/format_on_write.sh"
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "type": "command",
+        "command": ".claude/hooks/check_audit_decorator.sh"
+      }
+    ]
+  },
+  "model": {
+    "default": "claude-opus-4-7",
+    "fallback": "claude-sonnet-4-6"
+  },
+  "context": {
+    "maxContextPercent": 60,
+    "warnAt": 50
+  }
+}
