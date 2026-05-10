@@ -1,5 +1,5 @@
 {
-  "$schema": "https://claude.com/schemas/settings.json",
+  "$schema": "https://json.schemastore.org/claude-code-settings.json",
   "permissions": {
     "allow": [
       "Read(**)",
@@ -75,17 +75,15 @@
     ],
     "Stop": [
       {
-        "type": "command",
-        "command": ".claude/hooks/check_audit_decorator.sh"
+        "matcher": "*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": ".claude/hooks/check_audit_decorator.sh"
+          }
+        ]
       }
     ]
   },
-  "model": {
-    "default": "claude-opus-4-7",
-    "fallback": "claude-sonnet-4-6"
-  },
-  "context": {
-    "maxContextPercent": 60,
-    "warnAt": 50
-  }
+  "model": "claude-opus-4-7"
 }

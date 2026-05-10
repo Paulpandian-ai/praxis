@@ -1,0 +1,39 @@
+repos:
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.5.0
+    hooks:
+      - id: ruff
+        args: [--fix]
+      - id: ruff-format
+
+  - repo: https://github.com/biomejs/pre-commit
+    rev: v0.4.0
+    hooks:
+      - id: biome-check
+        additional_dependencies: ["@biomejs/biome@1.8.3"]
+        files: ^frontend/
+
+  - repo: https://github.com/gitleaks/gitleaks
+    rev: v8.18.4
+    hooks:
+      - id: gitleaks
+
+  - repo: local
+    hooks:
+      - id: block-secrets
+        name: block-secrets (project hook)
+        entry: .claude/hooks/block_secrets.sh
+        language: system
+        pass_filenames: false
+        stages: [pre-commit]
+
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.6.0
+    hooks:
+      - id: trailing-whitespace
+      - id: end-of-file-fixer
+      - id: check-yaml
+      - id: check-toml
+      - id: check-merge-conflict
+      - id: check-added-large-files
+        args: [--maxkb=1024]
